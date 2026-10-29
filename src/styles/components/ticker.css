@@ -33,6 +33,7 @@
     display: flex;
     width: max-content;
     animation: marquee 70s linear infinite;
+    will-change: transform;
   }
 
   .ticker:hover .ticker__track {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type PointerEvent } from "react";
+import { useEffect, useRef, type PointerEvent } from "react";
 import type { RankedTrack } from "@/data/types";
 import { cssVars } from "@/lib/css";
 import { compact, duration } from "@/lib/format";
@@ -22,19 +22,38 @@ export function Hero({ track, periodLabel, previousLabel, isCurrent, playing, on
   const up = growth >= 0;
   const showPause = isCurrent && playing;
 
-  // 3D tilt: the pointer position becomes two variables, the transform is in hero.css
-  function tilt(event: PointerEvent<HTMLElement>) {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const box = event.currentTarget.getBoundingClientRect();
-    stage.style.setProperty("--rx", String(((event.clientX - box.left) / box.width - 0.5) * 2));
-    stage.style.setProperty("--ry", String(((event.clientY - box.top) / box.height - 0.5) * 2));
+  // Tilt: the pointer position becomes two variables, the transform is in hero.css.
+  // Writes are batched to one per frame so a fast mouse never causes extra style work.
+  const frame = useRef(0);
+
+  function setTilt(x: number, y: number) {
+    window.cancelAnimationFrame(frame.current);
+    frame.current = window.requestAnimationFrame(() => {
+      stageRef.current?.style.setProperty("--rx", String(x));
+      stageRef.current?.style.setProperty("--ry", String(y));
+    });
   }
 
-  function untilt() {
-    stageRef.current?.style.setProperty("--rx", "0");
-    stageRef.current?.style.setProperty("--ry", "0");
+  // While the page scrolls under a resting cursor the browser keeps firing pointer
+  // moves; those are ignored so scrolling never pays for the tilt.
+  const lastScroll = useRef(0);
+
+  function tilt(event: PointerEvent<HTMLElement>) {
+    if (performance.now() - lastScroll.current < 200) return;
+    const box = event.currentTarget.getBoundingClientRect();
+    setTilt(((event.clientX - box.left) / box.width - 0.5) * 2, ((event.clientY - box.top) / box.height - 0.5) * 2);
   }
+
+  useEffect(() => {
+    const onScroll = () => {
+      lastScroll.current = performance.now();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.cancelAnimationFrame(frame.current);
+    };
+  }, []);
 
   return (
     <section
@@ -42,7 +61,7 @@ export function Hero({ track, periodLabel, previousLabel, isCurrent, playing, on
       style={cssVars({ "--d": 2, "--h1": track.h1, "--h2": track.h2 })}
       aria-label="Number one track"
       onPointerMove={tilt}
-      onPointerLeave={untilt}
+      onPointerLeave={() => setTilt(0, 0)}
     >
       <div className="hero__glow" aria-hidden="true" />
 

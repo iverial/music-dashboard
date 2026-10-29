@@ -45,13 +45,13 @@
     opacity: 0;
     scale: 0.85;
     transition: opacity 0.3s, scale 0.5s var(--ease-spring);
-    animation: spin-angle 4s linear infinite paused;
   }
 
+  /* the spinning ring only exists while the row is hovered */
   .artist:hover .artist__avatar::before {
     opacity: 1;
     scale: 1;
-    animation-play-state: running;
+    animation: spin-angle 4s linear infinite;
   }
 
   .artist__meta {

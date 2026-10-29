@@ -8,7 +8,7 @@ A dark, animated music top-charts dashboard built with **Next.js (App Router), T
 
 ## What it shows
 
-- **Hero** with the number one track: floating sleeve, a vinyl that spins while it "plays", 3D tilt on hover and a rotating gradient border.
+- **Hero** with the number one track: floating sleeve, a vinyl that spins while it "plays", 3D tilt on hover and a gradient border.
 - **Top 10 list** that reorders with **View Transitions** when you switch Week / Month / Year, with popularity bars, movement arrows, `NEW` badges and live search (press `/`).
 - **KPI cards** with count-up numbers animated by CSS alone.
 - **Genre donut** made of stacked conic gradients; hover a legend row and the other slices dim (pure CSS, `:has()`).
@@ -26,10 +26,9 @@ A dark, animated music top-charts dashboard built with **Next.js (App Router), T
 | Container queries (track list and donut adapt to their card, not the viewport) | `tracks.css`, `charts.css` |
 | `:has()` for the segmented control, like button and chart hover states | `controls.css`, `charts.css` |
 | View Transitions for list reordering | `motion.css`, `src/lib/viewTransition.ts` |
-| Scroll-driven reveals (`animation-timeline: view()`) | `motion.css` |
 | CSS counters + typed integers for count-up numbers | `kpi.css` |
-| Generated cover art with `oklch()`, gradients and blend modes (no images) | `cover.css` |
-| `color-mix()`, masks, `backdrop-filter`, `linear()` spring easing | across the board |
+| Generated cover art with `oklch()` and gradients (no images) | `cover.css` |
+| Gradient border without masks, `color-mix()`, `linear()` spring easing | `card.css`, `tokens.css` |
 | `prefers-reduced-motion` support | `motion.css` |
 
 React and TypeScript handle state, the player, search and data; the visual work lives in the stylesheets.
@@ -49,8 +48,10 @@ React and TypeScript handle state, the player, search and data; the visual work 
 The first version looked heavy and felt it, so the visual effects follow a budget now:
 
 - No `backdrop-filter`, `mix-blend-mode`, blurred blobs or full-screen overlays; the background is two static gradients that scroll with the page.
-- Entrances animate `transform`, `opacity` and typed properties only. Nothing animates a filter.
-- Looping animations run only while they are useful: the marquee, the equalizer and the vinyl (while "playing") and the hero border (while hovered).
+- Entrances animate `transform`, `opacity` and typed properties only. Nothing animates a filter, and nothing is tied to the scroll position.
+- No hover effects on large surfaces: a card never repaints because the page scrolled under the cursor.
+- Looping animations run only while they are useful: the marquee, and the equalizer and the vinyl while "playing". No paused animations are left behind keeping layers alive.
+- Cards use `contain: paint` so a change inside one cannot invalidate its neighbours.
 - View Transitions name the rows only while a transition is running.
 - Compact data sent to the client (one ranked list per period, the heatmap as a plain array of numbers).
 

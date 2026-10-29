@@ -10,18 +10,17 @@ const STACK = [
   "Container queries",
   ":has() selectors",
   "View transitions",
-  "Scroll-driven reveals",
   "Conic and radial gradients",
   "color-mix() and oklch()",
   "CSS counters",
-  "Masks and blend modes",
+  "CSS masks",
   "Zero UI dependencies",
 ];
 
 /** Server component: static content, no client JavaScript */
 export function About() {
   return (
-    <section className="card about reveal" id="about" aria-labelledby="about-title">
+    <section className="card about" id="about" aria-labelledby="about-title">
       <div className="about__copy">
         <p className="eyebrow">About this project</p>
         <h2 id="about-title">A showcase, not a product.</h2>

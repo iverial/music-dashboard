@@ -13,7 +13,7 @@ export function StreamsChart({ rows, peak, periodKey }: StreamsChartProps) {
   const axis = [rows[0], rows[Math.floor(rows.length / 2)], rows[rows.length - 1]];
 
   return (
-    <article className="card bars reveal" id="trends" aria-labelledby="bars-title">
+    <article className="card bars" id="trends" aria-labelledby="bars-title">
       <header className="card__head">
         <div>
           <h2 id="bars-title">Streams over time</h2>

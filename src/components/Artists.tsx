@@ -10,7 +10,7 @@ interface ArtistsProps {
 
 export function Artists({ artists, periodLabel, periodKey }: ArtistsProps) {
   return (
-    <article className="card artists reveal" id="artists" aria-labelledby="artists-title">
+    <article className="card artists" id="artists" aria-labelledby="artists-title">
       <header className="card__head">
         <h2 id="artists-title">Top artists</h2>
         <span className="muted">{periodLabel}</span>

@@ -15,7 +15,7 @@ export function Heatmap({ levels, periodKey }: HeatmapProps) {
   const busiest = levels.indexOf(Math.max(...levels));
 
   return (
-    <article className="card heat reveal" aria-labelledby="heat-title">
+    <article className="card heat" aria-labelledby="heat-title">
       <header className="card__head">
         <h2 id="heat-title">When you listen</h2>
         <span className="muted">weekday × hour</span>

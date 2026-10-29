@@ -9,18 +9,19 @@
   gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
   min-height: 23rem;
   padding: clamp(1.25rem, 1rem + 1.6vw, 2.5rem);
-  overflow: hidden;
   isolation: isolate;
 }
 
+/* kept inside the card so the hero needs no overflow clip (a rounded clip over layers is expensive to scroll) */
 .hero__glow {
   position: absolute;
-  right: -12%;
-  bottom: -45%;
+  right: 0;
+  bottom: 0;
   z-index: -1;
-  width: 75%;
+  width: min(62%, 28rem);
   aspect-ratio: 1;
   border-radius: 50%;
+  pointer-events: none;
   background: radial-gradient(closest-side, oklch(62% 0.21 var(--h1, 160) / 0.16), transparent);
 }
 
@@ -101,7 +102,6 @@
   display: grid;
   width: min(100%, 22rem);
   aspect-ratio: 1.25;
-  transform-style: preserve-3d;
   transform: rotateX(calc(var(--ry) * -9deg)) rotateY(calc(var(--rx) * 12deg));
   transition: transform 0.3s ease-out;
 }
@@ -132,6 +132,10 @@
     conic-gradient(from 25deg, transparent 0% 8%, rgb(255 255 255 / 0.17) 14%, transparent 22% 50%, rgb(255 255 255 / 0.12) 64%, transparent 72%),
     radial-gradient(circle closest-side, #0a0a0a 0 2.5%, oklch(66% 0.2 var(--h1, 160)) 3% 17%, #0a0a0a 17.5% 19.5%, transparent 20%),
     repeating-radial-gradient(circle closest-side, #181818 0 1.2px, #0b0b0b 1.2px 3px);
+}
+
+/* the spin only exists for the track that is loaded in the player, and only runs while it plays */
+.hero.is-current .vinyl {
   animation: spin 7s linear infinite paused;
 }
 

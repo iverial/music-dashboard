@@ -126,14 +126,6 @@
     }
   }
 
-  @keyframes reveal {
-    from {
-      opacity: 0;
-      translate: 0 56px;
-      scale: 0.97;
-    }
-  }
-
   /* ================= entrance choreography ================= */
 
   /* `backwards` (not `both`): once finished, hover transitions on the same
@@ -173,15 +165,6 @@
     animation-delay: calc(var(--i) * 60ms + 250ms);
   }
 
-  /* cards that live below the fold fade in as they scroll into view (no JS) */
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 4% entry 38%;
-    }
-  }
-
   /* ================= view transitions: rows glide to their new rank ================= */
 
   /* Rows only get a view-transition-name while a transition is running (the
@@ -217,7 +200,6 @@
       transition-duration: 0.001ms !important;
     }
 
-    .reveal,
     .ticker__track {
       animation: none !important;
     }

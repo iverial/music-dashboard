@@ -43,7 +43,7 @@ export function TrackList({ tracks, periodLabel, currentId, playing, query, onSe
   const maxStreams = tracks[0].streams;
 
   return (
-    <article className="card tracks reveal" id="tracks" aria-labelledby="tracks-title">
+    <article className="card tracks" id="tracks" aria-labelledby="tracks-title">
       <header className="card__head">
         <h2 id="tracks-title">Top 10</h2>
         <span className="muted">Ranked by streams {periodLabel}</span>
