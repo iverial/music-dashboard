@@ -69,22 +69,16 @@ export interface Bucket {
   height: number;
 }
 
-export interface HeatCell {
-  /** 0-1 */
-  level: number;
-  day: string;
-  hour: number;
-}
-
 export interface PeriodView {
   key: PeriodKey;
   label: string;
   prev: string;
-  top: RankedTrack[];
+  /** all 14 tracks, ranked; the top 10 is `all.slice(0, 10)` */
   all: RankedTrack[];
   kpis: Kpi[];
   genres: GenreShare[];
   artists: ArtistStat[];
   buckets: { rows: Bucket[]; peak: number };
-  heat: HeatCell[];
+  /** 7 days x 24 hours, 0-1, row-major (Monday first) */
+  heat: number[];
 }

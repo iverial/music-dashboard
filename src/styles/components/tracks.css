@@ -200,16 +200,6 @@
     animation-delay: calc(var(--i) * 70ms + 350ms);
   }
 
-  .track__bar > span::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
-    translate: -100% 0;
-    animation: sheen 3.4s ease-in-out infinite;
-    animation-delay: calc(var(--i) * 260ms);
-  }
-
   .track__streams,
   .track__time {
     text-align: right;

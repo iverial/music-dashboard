@@ -21,9 +21,7 @@
   width: 75%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, oklch(62% 0.21 var(--h1, 160) / 0.6), transparent);
-  filter: blur(24px);
-  animation: breathe 6s ease-in-out infinite alternate;
+  background: radial-gradient(closest-side, oklch(62% 0.21 var(--h1, 160) / 0.16), transparent);
 }
 
 .hero__body {
@@ -120,8 +118,7 @@
   width: 72%;
   box-shadow:
     0 34px 60px -22px rgb(0 0 0 / 0.85),
-    0 0 90px -12px oklch(60% 0.2 var(--h1, 160) / 0.55);
-  animation: float 7s ease-in-out infinite;
+    0 0 70px -22px oklch(60% 0.2 var(--h1, 160) / 0.25);
 }
 
 .vinyl {

@@ -14,7 +14,7 @@
   text-align: center;
   color: var(--text-2);
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent) 16%, transparent), transparent);
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent) 9%, transparent), transparent);
 }
 
 .demo-banner strong {
@@ -27,7 +27,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--accent);
-  animation: ping 2.2s ease-out infinite;
+  animation: ping 2.2s ease-out 3;
 }
 
 /* ---------- shell ---------- */
@@ -61,7 +61,6 @@
   scrollbar-width: none;
   background: rgb(0 0 0 / 0.42);
   border-right: 1px solid var(--line);
-  backdrop-filter: blur(24px);
 }
 
 .brand {
@@ -209,7 +208,7 @@
   font-size: 0.8125rem;
   color: var(--text-2);
   border: 1px solid color-mix(in oklab, var(--accent) 32%, transparent);
-  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 18%, transparent), color-mix(in oklab, var(--accent-2) 6%, transparent));
+  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 10%, transparent), color-mix(in oklab, var(--accent-2) 3%, transparent));
   transition: translate 0.4s var(--ease-spring);
 }
 
@@ -233,9 +232,8 @@
   gap: 0.75rem 1rem;
   margin-inline: calc(var(--pad) * -1);
   padding: 0.9rem var(--pad);
-  background: rgb(9 9 9 / 0.58);
+  background: rgb(9 9 9 / 0.94);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(18px) saturate(1.5);
 }
 
 .topbar .segmented {

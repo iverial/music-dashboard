@@ -27,7 +27,6 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    filter: drop-shadow(0 0 22px color-mix(in oklab, var(--accent) 22%, transparent));
     -webkit-mask:
       radial-gradient(farthest-side, transparent calc(100% - 1.7rem), #000 calc(100% - 1.7rem + 1px)),
       conic-gradient(#000 var(--sweep), transparent 0deg);
@@ -178,7 +177,7 @@
 
   .bar.is-peak > span {
     background: linear-gradient(to top, var(--accent-2), var(--accent));
-    box-shadow: 0 0 30px -4px var(--accent);
+    box-shadow: 0 0 22px -8px var(--accent);
   }
 
   /* dock-like focus: hovered bar pops, neighbours fade less than the rest */
@@ -236,6 +235,8 @@
     grid-template-columns: auto repeat(24, minmax(0, 1fr));
     align-items: center;
     gap: 3px;
+    /* one animation for the whole grid instead of one per cell (168) */
+    animation: fade-in 0.8s var(--ease-out) 0.25s backwards;
   }
 
   .heat__day {
@@ -250,8 +251,6 @@
     border-radius: 3px;
     background: color-mix(in oklab, var(--accent) calc(var(--l) * 100%), oklch(27% 0.01 160));
     transition: scale 0.3s var(--ease-spring), box-shadow 0.3s;
-    animation: cell-in 0.5s var(--ease-out) backwards;
-    animation-delay: calc(var(--i) * 5ms + 200ms);
   }
 
   .heat__cell:hover {

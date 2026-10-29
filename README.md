@@ -41,8 +41,20 @@ React and TypeScript handle state, the player, search and data; the visual work 
 - Generated social preview image (`opengraph-image.tsx`), `sitemap.xml`, `robots.txt` and a web app manifest.
 - JSON-LD structured data (`WebSite`, `WebApplication`, `SoftwareSourceCode`, `Person`).
 - One `h1`, a proper heading outline, landmarks, a skip link, labelled controls and `aria` on the charts.
-- Fonts self-hosted through `next/font` (no layout shift), zero images, zero UI dependencies.
+- Fonts self-hosted through `next/font` (no layout shift), one variable font file, zero images, zero UI dependencies.
 - Server Components for static parts (playlists, about, footer) passed as slots into the client dashboard.
+
+### Performance budget
+
+The first version looked heavy and felt it, so the visual effects follow a budget now:
+
+- No `backdrop-filter`, `mix-blend-mode`, blurred blobs or full-screen overlays; the background is two static gradients that scroll with the page.
+- Entrances animate `transform`, `opacity` and typed properties only. Nothing animates a filter.
+- Looping animations run only while they are useful: the marquee, the equalizer and the vinyl (while "playing") and the hero border (while hovered).
+- View Transitions name the rows only while a transition is running.
+- Compact data sent to the client (one ranked list per period, the heatmap as a plain array of numbers).
+
+On the same machine, an idle page went from about 270 ms to about 30 ms of main-thread work per 5 seconds, and scrolling went from roughly 27 to 60 fps in a software-rendered headless browser.
 
 ## Run it
 

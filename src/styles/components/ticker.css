@@ -2,10 +2,31 @@
   /* Infinite marquee of the current top 10. The list is rendered twice, so -50% loops seamlessly. */
 
   .ticker {
+    position: relative;
     overflow: hidden;
     border-block: 1px solid var(--line);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  /* edge fades are plain gradients on top; a mask would force the moving strip through an offscreen surface */
+  .ticker::before,
+  .ticker::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 8%;
+    pointer-events: none;
+  }
+
+  .ticker::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg), transparent);
+  }
+
+  .ticker::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bg), transparent);
   }
 
   .ticker__track {

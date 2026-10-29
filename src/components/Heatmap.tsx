@@ -1,17 +1,18 @@
 import { Fragment } from "react";
-import type { HeatCell, PeriodKey } from "@/data/types";
+import type { PeriodKey } from "@/data/types";
 import { cssVars } from "@/lib/css";
 
 interface HeatmapProps {
-  cells: HeatCell[];
+  /** 7 days x 24 hours, 0-1, Monday first */
+  levels: number[];
   periodKey: PeriodKey;
 }
 
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const HOUR_LABELS = ["0h", "6h", "12h", "18h"];
 
-export function Heatmap({ cells, periodKey }: HeatmapProps) {
-  const days = Array.from({ length: 7 }, (_, day) => cells.slice(day * 24, day * 24 + 24));
-  const busiest = cells.reduce((best, cell) => (cell.level > best.level ? cell : best), cells[0]);
+export function Heatmap({ levels, periodKey }: HeatmapProps) {
+  const busiest = levels.indexOf(Math.max(...levels));
 
   return (
     <article className="card heat reveal" aria-labelledby="heat-title">
@@ -24,18 +25,13 @@ export function Heatmap({ cells, periodKey }: HeatmapProps) {
         className="heat__grid"
         key={periodKey}
         role="img"
-        aria-label={`Listening heatmap by weekday and hour. Busiest slot: ${busiest.day} around ${busiest.hour}:00.`}
+        aria-label={`Listening heatmap by weekday and hour. Busiest slot: ${DAYS[Math.floor(busiest / 24)]} around ${busiest % 24}:00.`}
       >
-        {days.map((row, day) => (
-          <Fragment key={row[0].day}>
-            <span className="heat__day">{row[0].day}</span>
-            {row.map((cell) => (
-              <i
-                key={cell.hour}
-                className="heat__cell"
-                title={`${cell.day} ${cell.hour}:00 · ${Math.round(cell.level * 100)}% of peak`}
-                style={cssVars({ "--l": cell.level, "--i": day * 24 + cell.hour })}
-              />
+        {DAYS.map((day, dayIndex) => (
+          <Fragment key={day}>
+            <span className="heat__day">{day}</span>
+            {levels.slice(dayIndex * 24, dayIndex * 24 + 24).map((level, hour) => (
+              <i key={hour} className="heat__cell" style={cssVars({ "--l": level })} />
             ))}
           </Fragment>
         ))}

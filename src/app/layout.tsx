@@ -5,10 +5,10 @@ import { JsonLd } from "@/components/JsonLd";
 import { SITE, SITE_URL } from "@/lib/site";
 import "@/styles";
 
-// Self-hosted by next/font: no request to Google at runtime, no layout shift
+// Self-hosted by next/font: no request to Google at runtime, no layout shift.
+// No `weight` list, so it ships the single variable font file instead of one per weight.
 const figtree = Figtree({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-figtree",
   display: "swap",
 });

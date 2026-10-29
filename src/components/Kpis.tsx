@@ -21,7 +21,7 @@ export function Kpis({ kpis, periodKey }: KpisProps) {
               </span>
               <div className="spark" aria-hidden="true">
                 {kpi.spark.map((value, index) => (
-                  <i key={index} style={cssVars({ "--v": value, "--k": index })} />
+                  <i key={index} style={cssVars({ "--v": value })} />
                 ))}
               </div>
             </div>

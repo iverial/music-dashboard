@@ -4,7 +4,6 @@ import type {
   ArtistStat,
   Bucket,
   GenreShare,
-  HeatCell,
   Kpi,
   PeriodKey,
   PeriodView,
@@ -123,7 +122,7 @@ function streamsOverTime(key: PeriodKey, total: number, seed: number) {
   return { rows, peak: values.indexOf(max) };
 }
 
-function listeningHeat(seed: number): HeatCell[] {
+function listeningHeat(seed: number): number[] {
   const rand = createRng(seed * 13);
 
   const curve = (hour: number, weekend: boolean) => {
@@ -141,11 +140,7 @@ function listeningHeat(seed: number): HeatCell[] {
   }
   const max = Math.max(...raw);
 
-  return raw.map((value, index) => ({
-    level: Math.round(clamp(value / max, 0.05, 1) * 100) / 100,
-    day: DAYS[Math.floor(index / 24)],
-    hour: index % 24,
-  }));
+  return raw.map((value) => Math.round(clamp(value / max, 0.05, 1) * 100) / 100);
 }
 
 function buildView(key: PeriodKey): PeriodView {
@@ -188,7 +183,6 @@ function buildView(key: PeriodKey): PeriodView {
     key,
     label: period.label,
     prev: period.prev,
-    top: all.slice(0, 10),
     all,
     kpis,
     genres,

@@ -21,7 +21,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ playlists }: SidebarProps) {
-  const active = useScrollSpy(SECTION_IDS);
+  const { active, select } = useScrollSpy(SECTION_IDS);
 
   return (
     <aside className="sidebar">
@@ -36,6 +36,7 @@ export function Sidebar({ playlists }: SidebarProps) {
             key={section.id}
             className={active === section.id ? "nav__link is-active" : "nav__link"}
             href={`#${section.id}`}
+            onClick={() => select(section.id)}
             aria-current={active === section.id ? "location" : undefined}
           >
             <Icon name={section.icon} />

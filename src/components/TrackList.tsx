@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import type { RankedTrack } from "@/data/types";
 import { cssVars } from "@/lib/css";
 import { compact, duration } from "@/lib/format";
@@ -71,7 +71,7 @@ export function TrackList({ tracks, periodLabel, currentId, playing, query, onSe
               hidden={!matches(track)}
               aria-current={isCurrent ? "true" : undefined}
               onClick={() => onSelect(track.id)}
-              style={{ ...cssVars({ "--i": index }), viewTransitionName: `row-${track.id}` } as CSSProperties}
+              style={cssVars({ "--i": index, "--vt": `row-${track.id}` })}
             >
               <span className="track__rank">
                 <span className="track__num">{track.rank}</span>

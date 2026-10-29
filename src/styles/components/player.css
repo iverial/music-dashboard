@@ -10,8 +10,7 @@
     height: var(--player-h);
     padding-inline: var(--pad);
     border-top: 1px solid var(--line);
-    background: rgb(10 10 10 / 0.78);
-    backdrop-filter: blur(26px) saturate(1.7);
+    background: rgb(10 10 10 / 0.97);
   }
 
   /* glowing hairline on top */

@@ -3,7 +3,6 @@
 import { useMemo, useState, type ReactNode } from "react";
 import type { PeriodKey, PeriodView } from "@/data/types";
 import { usePlayer } from "@/hooks/usePlayer";
-import { useSpotlight } from "@/hooks/useSpotlight";
 import { withViewTransition } from "@/lib/viewTransition";
 import { Artists } from "./Artists";
 import { GenreDonut } from "./GenreDonut";
@@ -31,26 +30,19 @@ export function Dashboard({ views, playlists, about, footer }: DashboardProps) {
   const [accent, setAccent] = useState<Accent>("green");
 
   const view = views[period];
+  const top = view.all.slice(0, 10);
   const lookup = useMemo(() => new Map(views.week.all.map((track) => [track.id, track])), [views]);
-  const player = usePlayer(view.top, lookup, views.week.top[0].id);
-
-  useSpotlight();
+  const player = usePlayer(top, lookup, views.week.all[0].id);
 
   // reordering the list inside a View Transition makes the rows glide to their new rank
   const changePeriod = (next: PeriodKey) => {
     if (next !== period) withViewTransition(() => setPeriod(next));
   };
 
-  const hero = view.top[0];
+  const hero = top[0];
 
   return (
     <div className={player.playing ? "app is-playing" : "app"} data-accent={accent}>
-      <div className="aurora" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </div>
-
       <div className="shell">
         <Sidebar playlists={playlists} />
 
@@ -73,7 +65,7 @@ export function Dashboard({ views, playlists, about, footer }: DashboardProps) {
             <p className="lead">The most played songs, ranked by streams, with how each one moved since the previous period.</p>
           </section>
 
-          <Ticker tracks={view.top} />
+          <Ticker tracks={top} />
 
           <div className="grid">
             <Hero
@@ -88,7 +80,7 @@ export function Dashboard({ views, playlists, about, footer }: DashboardProps) {
             <Kpis kpis={view.kpis} periodKey={view.key} />
 
             <TrackList
-              tracks={view.top}
+              tracks={top}
               periodLabel={view.label}
               currentId={player.current.id}
               playing={player.playing}
@@ -98,7 +90,7 @@ export function Dashboard({ views, playlists, about, footer }: DashboardProps) {
 
             <div className="stack">
               <Artists artists={view.artists} periodLabel={view.label} periodKey={view.key} />
-              <Heatmap cells={view.heat} periodKey={view.key} />
+              <Heatmap levels={view.heat} periodKey={view.key} />
             </div>
 
             <StreamsChart rows={view.buckets.rows} peak={view.buckets.peak} periodKey={view.key} />

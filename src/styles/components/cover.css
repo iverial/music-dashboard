@@ -18,7 +18,7 @@
     radial-gradient(120% 90% at 14% 8%, var(--c1), transparent 62%),
     radial-gradient(90% 90% at 92% 96%, var(--c2), transparent 62%),
     linear-gradient(145deg, oklch(30% 0.09 var(--h1, 160)), oklch(18% 0.06 var(--h2, 215)));
-  box-shadow: 0 10px 28px -12px oklch(50% 0.18 var(--h1, 160) / 0.8);
+  box-shadow: 0 10px 28px -14px oklch(50% 0.18 var(--h1, 160) / 0.45);
 }
 
 .cover::before {
@@ -27,7 +27,7 @@
   inset: 0;
   z-index: 1;
   background: var(--pattern, none);
-  mix-blend-mode: overlay;
+  opacity: 0.5;
 }
 
 /* gloss */
