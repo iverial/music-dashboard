@@ -1,0 +1,92 @@
+@layer components {
+  .artists__list {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .artist {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: var(--r-md);
+    transition: background 0.25s;
+  }
+
+  .artist:hover {
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  /* avatar: generated gradient + a spinning ring that shows up on hover */
+  .artist__avatar {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #fff;
+    text-shadow: 0 1px 8px rgb(0 0 0 / 0.4);
+    background: radial-gradient(circle at 30% 22%, oklch(78% 0.17 var(--h1, 160)), oklch(38% 0.13 var(--h2, 215)));
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18);
+  }
+
+  .artist__avatar::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(from var(--angle), var(--accent), transparent 35%, var(--accent-2) 55%, transparent 80%, var(--accent));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    opacity: 0;
+    scale: 0.85;
+    transition: opacity 0.3s, scale 0.5s var(--ease-spring);
+    animation: spin-angle 4s linear infinite paused;
+  }
+
+  .artist:hover .artist__avatar::before {
+    opacity: 1;
+    scale: 1;
+    animation-play-state: running;
+  }
+
+  .artist__meta {
+    display: grid;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  .artist__meta strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .artist__bar {
+    height: 4px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  .artist__bar i {
+    display: block;
+    width: calc(var(--w) * 1%);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    transform-origin: left;
+    animation: grow-x 1s var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * 80ms + 300ms);
+  }
+
+  .artist__streams {
+    font-size: 0.9375rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+}

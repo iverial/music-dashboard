@@ -1,0 +1,287 @@
+@layer components {
+  /* ================= genre donut: stacked conic-gradient slices ================= */
+
+  .donut {
+    container: donut / inline-size;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .donut__body {
+    display: grid;
+    flex: 1;
+    align-content: center;
+    gap: 1.5rem;
+  }
+
+  .donut__plot {
+    position: relative;
+    width: min(100%, 14rem);
+    aspect-ratio: 1;
+    margin-inline: auto;
+  }
+
+  /* hole + angular sweep, both done with masks (intersected) */
+  .donut__ring {
+    --sweep: 360deg;
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    filter: drop-shadow(0 0 22px color-mix(in oklab, var(--accent) 22%, transparent));
+    -webkit-mask:
+      radial-gradient(farthest-side, transparent calc(100% - 1.7rem), #000 calc(100% - 1.7rem + 1px)),
+      conic-gradient(#000 var(--sweep), transparent 0deg);
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(farthest-side, transparent calc(100% - 1.7rem), #000 calc(100% - 1.7rem + 1px)),
+      conic-gradient(#000 var(--sweep), transparent 0deg);
+    mask-composite: intersect;
+    animation: sweep 1.5s var(--ease-out) backwards;
+    animation-delay: 0.3s;
+  }
+
+  .seg {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background: conic-gradient(from calc(var(--start) * 3.6deg), var(--c) 0deg calc(var(--len) * 3.6deg - 3deg), transparent 0deg);
+    transition: opacity 0.3s, scale 0.5s var(--ease-spring);
+  }
+
+  .donut__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }
+
+  .donut__center .count {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .donut__legend {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .donut__legend li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.42rem 0.6rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background 0.2s, opacity 0.25s, translate 0.4s var(--ease-spring);
+  }
+
+  .donut__legend li:hover {
+    background: rgb(255 255 255 / 0.06);
+    translate: 4px 0;
+  }
+
+  .donut__legend li i {
+    width: 0.7rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 12px var(--c);
+  }
+
+  .donut__legend b {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .donut__legend:has(li:hover) li:not(:hover) {
+    opacity: 0.5;
+  }
+
+  /* hovering a legend row dims every other slice (pure CSS, no JS) */
+  .donut:has(li[data-g="pop"]:hover) .seg:not([data-g="pop"]),
+  .donut:has(li[data-g="electronic"]:hover) .seg:not([data-g="electronic"]),
+  .donut:has(li[data-g="latin"]:hover) .seg:not([data-g="latin"]),
+  .donut:has(li[data-g="indie"]:hover) .seg:not([data-g="indie"]),
+  .donut:has(li[data-g="rnb"]:hover) .seg:not([data-g="rnb"]),
+  .donut:has(li[data-g="rock"]:hover) .seg:not([data-g="rock"]) {
+    opacity: 0.18;
+  }
+
+  .donut:has(li[data-g="pop"]:hover) .seg[data-g="pop"],
+  .donut:has(li[data-g="electronic"]:hover) .seg[data-g="electronic"],
+  .donut:has(li[data-g="latin"]:hover) .seg[data-g="latin"],
+  .donut:has(li[data-g="indie"]:hover) .seg[data-g="indie"],
+  .donut:has(li[data-g="rnb"]:hover) .seg[data-g="rnb"],
+  .donut:has(li[data-g="rock"]:hover) .seg[data-g="rock"] {
+    scale: 1.045;
+  }
+
+  /* wide card (container query): ring on the left, legend on the right */
+  @container donut (min-width: 560px) {
+    .donut__body {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .donut__plot {
+      margin: 0;
+    }
+  }
+
+  /* ================= bar chart ================= */
+
+  .bars__plot {
+    height: clamp(11rem, 8rem + 12vw, 16rem);
+    padding-top: 1.6rem;
+  }
+
+  .bars__cols {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    align-items: end;
+    gap: clamp(3px, 0.6vw, 10px);
+    height: 100%;
+    background: repeating-linear-gradient(to top, rgb(255 255 255 / 0.08) 0 1px, transparent 1px 25%);
+  }
+
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .bar > span {
+    width: 100%;
+    max-width: 4.5rem;
+    height: calc(var(--h) * 1%);
+    min-height: 4px;
+    border-radius: 6px 6px 3px 3px;
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--accent-2) 55%, transparent),
+      color-mix(in oklab, var(--accent) calc(35% + var(--h) * 0.6%), transparent)
+    );
+    transform-origin: bottom;
+    transition: opacity 0.25s, scale 0.4s var(--ease-spring);
+    animation: grow-y 0.9s var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * 28ms + 300ms);
+  }
+
+  .bar.is-peak > span {
+    background: linear-gradient(to top, var(--accent-2), var(--accent));
+    box-shadow: 0 0 30px -4px var(--accent);
+  }
+
+  /* dock-like focus: hovered bar pops, neighbours fade less than the rest */
+  .bars__cols:has(.bar:hover) .bar:not(:hover) > span {
+    opacity: 0.4;
+  }
+
+  .bars__cols:has(.bar:hover) .bar:hover + .bar > span,
+  .bars__cols:has(.bar:hover) .bar:has(+ .bar:hover) > span {
+    opacity: 0.75;
+  }
+
+  .bar:hover > span {
+    scale: 1 1.04;
+  }
+
+  .bar::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--h) * 1% + 12px);
+    z-index: 5;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+    color: #000;
+    background: var(--text);
+    box-shadow: 0 10px 30px -8px rgb(0 0 0 / 0.8);
+    opacity: 0;
+    translate: -50% 6px;
+    pointer-events: none;
+    transition: opacity 0.2s, translate 0.4s var(--ease-spring);
+  }
+
+  .bar:hover::after {
+    opacity: 1;
+    translate: -50% 0;
+  }
+
+  .bars__axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-3);
+  }
+
+  /* ================= listening heatmap ================= */
+
+  .heat__grid {
+    display: grid;
+    grid-template-columns: auto repeat(24, minmax(0, 1fr));
+    align-items: center;
+    gap: 3px;
+  }
+
+  .heat__day {
+    padding-right: 0.55rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-3);
+  }
+
+  .heat__cell {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: color-mix(in oklab, var(--accent) calc(var(--l) * 100%), oklch(27% 0.01 160));
+    transition: scale 0.3s var(--ease-spring), box-shadow 0.3s;
+    animation: cell-in 0.5s var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * 5ms + 200ms);
+  }
+
+  .heat__cell:hover {
+    position: relative;
+    z-index: 2;
+    scale: 1.75;
+    box-shadow: 0 0 16px var(--accent);
+  }
+
+  .heat__hour {
+    margin-top: 0.35rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--text-3);
+  }
+
+  .heat__scale {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-3);
+  }
+
+  .heat__scale i {
+    flex: 0 1 8rem;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: linear-gradient(90deg, oklch(27% 0.01 160), var(--accent));
+  }
+}

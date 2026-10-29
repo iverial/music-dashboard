@@ -1,0 +1,289 @@
+@layer components {
+  /* Top 10 list: one grid template shared by the header and every row */
+
+  .tracks {
+    container: tracks / inline-size;
+  }
+
+  .tracks__head,
+  .track {
+    display: grid;
+    grid-template-columns: 2.25rem 3rem minmax(0, 1.6fr) minmax(4rem, 1fr) 4rem 3.75rem 2.75rem;
+    align-items: center;
+    gap: 0.875rem;
+    padding-inline: 0.75rem;
+  }
+
+  .tracks__head {
+    margin-bottom: 0.35rem;
+    padding-block: 0.25rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  .tracks__head span:nth-child(n + 5) {
+    text-align: right;
+  }
+
+  .track {
+    position: relative;
+    min-height: 3.9rem;
+    padding-block: 0.4rem;
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+
+  .track:hover {
+    background: rgb(255 255 255 / 0.07);
+  }
+
+  .track.is-current {
+    background: color-mix(in oklab, var(--accent) 9%, transparent);
+  }
+
+  /* accent tick on the left */
+  .track::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 22%;
+    bottom: 22%;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(var(--accent), var(--accent-2));
+    scale: 1 0;
+    transition: scale 0.4s var(--ease-spring);
+  }
+
+  .track:hover::after,
+  .track.is-current::after {
+    scale: 1 1;
+  }
+
+  /* rank cell: number, play button and equalizer share the same spot */
+  .track__rank {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-2);
+  }
+
+  .track__rank > * {
+    grid-area: 1 / 1;
+    transition: opacity 0.2s, scale 0.4s var(--ease-spring);
+  }
+
+  .track[data-rank="1"] .track__num {
+    font-size: 1.125rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .track[data-rank="2"] .track__num,
+  .track[data-rank="3"] .track__num {
+    color: var(--text);
+  }
+
+  .track__play {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    color: var(--on-accent);
+    background: var(--accent);
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  .track__play .i-pause,
+  .is-playing .track.is-current .track__play .i-play {
+    display: none;
+  }
+
+  .is-playing .track.is-current .track__play .i-pause {
+    display: block;
+  }
+
+  .track .eq {
+    opacity: 0;
+  }
+
+  .track.is-current .eq {
+    opacity: 1;
+  }
+
+  .track:hover .track__num,
+  .track.is-current .track__num,
+  .track:has(.track__play:focus-visible) .track__num {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  .track:hover .track__play,
+  .track:has(.track__play:focus-visible) .track__play {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .track.is-current:hover .eq,
+  .track.is-current:has(.track__play:focus-visible) .eq {
+    opacity: 0;
+  }
+
+  .track .cover {
+    --cover-r: 0.55rem;
+    width: 100%;
+    transition: scale 0.5s var(--ease-spring), rotate 0.5s var(--ease-spring);
+  }
+
+  .track:hover .cover {
+    scale: 1.1;
+    rotate: -3deg;
+  }
+
+  .track__meta {
+    display: grid;
+    min-width: 0;
+  }
+
+  .track__title,
+  .track__artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .track__title {
+    font-weight: 700;
+    transition: color 0.25s;
+  }
+
+  .track.is-current .track__title {
+    color: var(--accent);
+  }
+
+  .track__artist {
+    font-size: 0.8125rem;
+    color: var(--text-2);
+  }
+
+  /* popularity bar with a moving sheen */
+  .track__bar {
+    position: relative;
+    height: 6px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  .track__bar > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--w) * 1%);
+    overflow: hidden;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    transform-origin: left;
+    animation: grow-x 1s var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * 70ms + 350ms);
+  }
+
+  .track__bar > span::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+    translate: -100% 0;
+    animation: sheen 3.4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 260ms);
+  }
+
+  .track__streams,
+  .track__time {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .track__streams {
+    font-weight: 800;
+  }
+
+  .track__time {
+    font-size: 0.875rem;
+    color: var(--text-2);
+  }
+
+  .trend {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-3);
+  }
+
+  .trend .icon {
+    font-size: 0.85em;
+  }
+
+  .trend--up {
+    color: var(--up);
+  }
+
+  .trend--down {
+    color: var(--down);
+  }
+
+  .trend--new {
+    justify-self: end;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--r-pill);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    color: var(--on-accent);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+
+  .tracks__empty {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text-2);
+  }
+
+  /* first paint only: rows slide in one after the other */
+  .tracks__list.is-enter .track {
+    animation: row-in 0.7s var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * 60ms + 250ms);
+  }
+
+  /* narrow card (container query, not viewport): drop the optional columns */
+  @container tracks (max-width: 600px) {
+    .tracks__head,
+    .track {
+      grid-template-columns: 2rem 2.75rem minmax(0, 1fr) auto auto;
+      gap: 0.7rem;
+      padding-inline: 0.4rem;
+    }
+
+    .track__bar,
+    .track__time,
+    .tracks__head span:nth-child(4),
+    .tracks__head span:nth-child(7) {
+      display: none;
+    }
+  }
+}

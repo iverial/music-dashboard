@@ -1,0 +1,379 @@
+@layer components {
+/* ---------- buttons ---------- */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 2.9rem;
+  padding: 0 1.6rem;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  background: rgb(255 255 255 / 0.04);
+  transition: scale 0.4s var(--ease-spring), border-color 0.3s, box-shadow 0.3s;
+}
+
+/* light sweep on hover */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+  translate: -120% 0;
+  transition: translate 0.8s var(--ease-out);
+}
+
+.btn:hover {
+  scale: 1.05;
+  border-color: var(--text);
+}
+
+.btn:hover::before {
+  translate: 120% 0;
+}
+
+.btn:active {
+  scale: 0.97;
+}
+
+.btn--primary {
+  color: var(--on-accent);
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 10px 30px -12px var(--accent);
+}
+
+.btn--primary:hover {
+  border-color: transparent;
+  box-shadow: 0 16px 40px -10px var(--accent);
+}
+
+.icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--text-2);
+  transition: color 0.25s, scale 0.4s var(--ease-spring);
+}
+
+.icon-btn:hover {
+  color: var(--text);
+  scale: 1.14;
+}
+
+.icon-btn:active {
+  scale: 0.9;
+}
+
+.icon-btn[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.icon-btn[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0.1rem;
+  left: 50%;
+  width: 4px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  translate: -50% 0;
+}
+
+.play-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: #000;
+  background: var(--text);
+  transition: scale 0.4s var(--ease-spring);
+}
+
+.play-btn:hover {
+  scale: 1.1;
+}
+
+.play-btn:active {
+  scale: 0.94;
+}
+
+.play-btn .i-pause,
+.is-playing .play-btn .i-play {
+  display: none;
+}
+
+.is-playing .play-btn .i-pause {
+  display: block;
+}
+
+.is-playing .play-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: ring-out 1.8s ease-out infinite;
+}
+
+/* ---------- like (heart): a checkbox, :has() does the styling ---------- */
+
+.like {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 2.9rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, background 0.25s, scale 0.4s var(--ease-spring);
+}
+
+.like:hover {
+  color: var(--text);
+  scale: 1.08;
+}
+
+.like input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.like .icon {
+  transition: fill 0.25s;
+}
+
+.like:has(:checked) {
+  color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+}
+
+.like:has(:checked) .icon {
+  fill: currentColor;
+  animation: pop 0.6s var(--ease-spring);
+}
+
+.like:has(:checked)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: ring-out 0.7s ease-out;
+}
+
+.like:has(:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.like--sm {
+  width: 2rem;
+  border-color: transparent;
+}
+
+/* ---------- segmented control: the thumb slides with :has() + one variable ---------- */
+
+.segmented {
+  --i: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0.25rem;
+  isolation: isolate;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: rgb(255 255 255 / 0.06);
+}
+
+.segmented::before {
+  content: "";
+  position: absolute;
+  inset: 0.25rem auto 0.25rem 0.25rem;
+  z-index: -1;
+  width: calc((100% - 0.5rem) / 3);
+  border-radius: inherit;
+  background: var(--text);
+  box-shadow: 0 6px 18px -6px rgb(255 255 255 / 0.5);
+  translate: calc(var(--i) * 100%) 0;
+  transition: translate 0.55s var(--ease-spring);
+}
+
+.segmented:has(#p-month:checked) { --i: 1; }
+.segmented:has(#p-year:checked) { --i: 2; }
+
+.segmented input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented label {
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--r-pill);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.segmented label:hover {
+  color: var(--text);
+}
+
+.segmented input:checked + label {
+  color: #000;
+}
+
+.segmented:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- accent swatches ---------- */
+
+.swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: rgb(255 255 255 / 0.06);
+}
+
+.swatches input {
+  appearance: none;
+  width: 1.15rem;
+  aspect-ratio: 1;
+  margin: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--a), var(--b));
+  cursor: pointer;
+  transition: scale 0.4s var(--ease-spring), box-shadow 0.3s;
+}
+
+.swatches input:hover {
+  scale: 1.28;
+}
+
+.swatches input:checked {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--text);
+}
+
+/* ---------- search ---------- */
+
+.search {
+  display: flex;
+  flex: 1 1 14rem;
+  align-items: center;
+  gap: 0.65rem;
+  max-width: 26rem;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  background: rgb(255 255 255 / 0.07);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.search:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+
+.search:focus-within {
+  color: var(--text);
+  background: rgb(255 255 255 / 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+}
+
+.search input::placeholder {
+  color: var(--text-3);
+}
+
+.search kbd {
+  padding: 0.05rem 0.45rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.4rem;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-3);
+}
+
+.search:focus-within kbd {
+  display: none;
+}
+
+/* ---------- equalizer bars ---------- */
+
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 1rem;
+}
+
+.eq i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: bottom;
+  scale: 1 0.35;
+  animation: eq 1s ease-in-out infinite alternate paused;
+}
+
+.eq i:nth-child(1) { animation-duration: 0.9s;  animation-delay: -0.3s; }
+.eq i:nth-child(2) { animation-duration: 1.15s; animation-delay: -0.7s; }
+.eq i:nth-child(3) { animation-duration: 0.8s;  animation-delay: -0.1s; }
+.eq i:nth-child(4) { animation-duration: 1.05s; animation-delay: -0.5s; }
+.eq i:nth-child(5) { animation-duration: 0.95s; animation-delay: -0.9s; }
+
+.is-playing .eq i {
+  animation-play-state: running;
+}
+
+.eq--lg {
+  height: 1.75rem;
+  gap: 3px;
+}
+
+.eq--lg i {
+  width: 4px;
+}
+}

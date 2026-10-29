@@ -1,0 +1,215 @@
+@layer components {
+  .player {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+    height: var(--player-h);
+    padding-inline: var(--pad);
+    border-top: 1px solid var(--line);
+    background: rgb(10 10 10 / 0.78);
+    backdrop-filter: blur(26px) saturate(1.7);
+  }
+
+  /* glowing hairline on top */
+  .player::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.55;
+  }
+
+  .player__track {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    min-width: 0;
+  }
+
+  .player__track .cover {
+    --cover-r: 0.55rem;
+    flex: none;
+    width: 3.5rem;
+  }
+
+  .player__meta {
+    display: grid;
+    min-width: 0;
+  }
+
+  .player__meta strong,
+  .player__meta span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .player__meta strong {
+    font-size: 0.9375rem;
+  }
+
+  .player__meta span {
+    font-size: 0.8125rem;
+    color: var(--text-2);
+  }
+
+  .player__center {
+    display: grid;
+    justify-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+
+  .player__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .player__scrub {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    width: min(100%, 38rem);
+  }
+
+  .player__scrub time {
+    min-width: 2.2rem;
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-2);
+  }
+
+  .player__scrub time:first-child {
+    text-align: right;
+  }
+
+  .player__side {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .player__hint {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-3);
+  }
+
+  /* ---------- custom range: the filled part is a gradient sized by --p ---------- */
+
+  .range {
+    --p: 0%;
+    width: 100%;
+    height: 1rem;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 4px;
+    background:
+      linear-gradient(90deg, var(--accent-2), var(--accent)) 0 / var(--p) 100% no-repeat,
+      rgb(255 255 255 / 0.2);
+  }
+
+  .range::-moz-range-track {
+    height: 4px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 0.2);
+  }
+
+  .range::-moz-range-progress {
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  }
+
+  .range::-webkit-slider-thumb {
+    width: 12px;
+    height: 12px;
+    margin-top: -4px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+    transform: scale(0);
+    transition: transform 0.25s var(--ease-spring);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+    transform: scale(0);
+    transition: transform 0.25s;
+  }
+
+  .range:hover::-webkit-slider-thumb,
+  .range:focus-visible::-webkit-slider-thumb {
+    transform: scale(1);
+  }
+
+  .range:hover::-moz-range-thumb,
+  .range:focus-visible::-moz-range-thumb {
+    transform: scale(1);
+  }
+
+  /* ---------- phones: mini player sitting on top of the tab bar ---------- */
+
+  @media (max-width: 900px) {
+    .player {
+      bottom: var(--nav-h);
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.75rem;
+    }
+
+    .player__track .cover {
+      width: 2.9rem;
+    }
+
+    .player__side,
+    .icon-btn--aux,
+    .player .like {
+      display: none;
+    }
+
+    /* the seek bar becomes a thin line on top of the player */
+    .player__scrub {
+      position: absolute;
+      inset: -1px 0 auto;
+      display: block;
+      width: auto;
+    }
+
+    .player__scrub time {
+      display: none;
+    }
+
+    .player__scrub .range {
+      display: block;
+      height: 4px;
+    }
+
+    .player__scrub .range::-webkit-slider-thumb {
+      transform: scale(0) !important;
+    }
+  }
+}

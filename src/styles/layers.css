@@ -1,0 +1,5 @@
+/*
+ * Layer order = priority order (last wins), so the cascade never turns into a
+ * specificity war. Every other stylesheet wraps its rules in one of these layers.
+ */
+@layer reset, tokens, base, layout, components, motion;

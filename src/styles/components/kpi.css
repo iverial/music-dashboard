@@ -1,0 +1,123 @@
+@layer components {
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+@media (max-width: 1180px) {
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .kpis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.kpi {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  transition: translate 0.5s var(--ease-spring), border-color 0.3s;
+}
+
+.kpi:hover {
+  translate: 0 -5px;
+}
+
+.kpi__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.kpi__icon {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent);
+  border-radius: 0.8rem;
+  font-size: 1.1rem;
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+}
+
+.kpi__label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.kpi__value {
+  font-size: clamp(2rem, 1.4rem + 1.6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Count-up numbers without JS animation: --n and --f are typed integers that the
+ * "count" keyframes animate from 0; CSS counters turn them into text.
+ */
+.count {
+  counter-reset: n var(--n) f var(--f);
+}
+
+.count::before {
+  content: counter(n) "." counter(f);
+}
+
+.count::after {
+  content: attr(data-suffix);
+  margin-left: 0.1em;
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--text-2);
+}
+
+.count--int::before {
+  content: counter(n);
+}
+
+.kpi__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.delta .icon {
+  font-size: 0.85em;
+}
+
+.spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 2.25rem;
+}
+
+.spark i {
+  width: 4px;
+  height: calc(var(--v) * 1%);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--accent) calc(25% + var(--v) * 0.6%), transparent);
+  transform-origin: bottom;
+}
+}

@@ -1,0 +1,41 @@
+/*
+ * Typed custom properties. Registering them lets the browser interpolate
+ * colors, angles and integers, which is what powers the accent cross-fade,
+ * the rotating borders, the donut sweep and the count-up numbers.
+ */
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1ed760;
+}
+
+@property --accent-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #00d4b1;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 360deg;
+}
+
+/* --n and --f: integer and decimal digit of a count-up number */
+@property --n {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --f {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
